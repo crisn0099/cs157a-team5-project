@@ -7,7 +7,7 @@ public class MysqlCon {
             Connection con = DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/games_for_me?autoReconnect=true&useSSL=false",
                 "root",
-                "db_password"
+                "Hardinser20@"
             );
 
             Statement stmt = con.createStatement();

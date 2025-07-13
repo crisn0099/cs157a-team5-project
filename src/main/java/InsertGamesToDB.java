@@ -1,4 +1,4 @@
-import java.io.BufferedReader;
+import java.io.BufferedReader; 
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -13,7 +13,7 @@ public class InsertGamesToDB {
 
         String jdbcUrl = "jdbc:mysql://localhost:3306/games_for_me?autoReconnect=true&useSSL=false";
         String dbUser = "root";
-        String dbPass = "db_password";
+        String dbPass = "Hardinser20@";
 
         try (
             Connection conn = DriverManager.getConnection(jdbcUrl, dbUser, dbPass)
