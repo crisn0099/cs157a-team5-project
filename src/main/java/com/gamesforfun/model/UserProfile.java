@@ -22,7 +22,8 @@ public class UserProfile {
        return userInfo;
    }
    public List<Map<String, String>> getWishlist(int userID) throws SQLException {
-       String query = "SELECT g.title, g.releaseDate, g.coverArt FROM wishlist w " +
+       String query = "SELECT g.title, g.releaseDate, g.coverArt, w.dateAdded " + 
+    		   		  "FROM wishlist w " +
                       "JOIN game g ON w.gameID = g.gameID WHERE w.userID = ?";
        List<Map<String, String>> wishlist = new ArrayList<>();
        try (PreparedStatement ps = conn.prepareStatement(query)) {
@@ -32,7 +33,8 @@ public class UserProfile {
                Map<String, String> game = new HashMap<>();
                game.put("name", rs.getString("title"));             
                game.put("releaseDate", rs.getString("releaseDate"));
-               game.put("coverImage", rs.getString("coverArt"));     
+               game.put("coverImage", rs.getString("coverArt"));
+               game.put("dateAdded", rs.getString("dateAdded"));
                wishlist.add(game);
            }
        }

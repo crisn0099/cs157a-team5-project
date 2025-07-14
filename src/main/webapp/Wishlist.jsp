@@ -27,7 +27,7 @@
            }
        }
        conn.close();
-       response.sendRedirect("WPdemo.jsp");
+       response.sendRedirect("MainPage.jsp");
    } catch (Exception e) {
        out.println("<p style='color:red;'>Error adding to wishlist: " + e.getMessage() + "</p>");
    }

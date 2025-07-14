@@ -102,7 +102,7 @@
 <body>
 <header>
  <div class="logo">GamesForMe</div>
- <a href="UserProfile.jsp?userID=11" class="user-profile-btn" title="User Profile">��</a>
+ <a href="UserProfile.jsp?userID=11" class="user-profile-btn" title="User Profile"></a>
 </header>
 <h2>Featured Games</h2>
 <div class="game-container">
@@ -113,7 +113,18 @@
  try {
    Class.forName("com.mysql.cj.jdbc.Driver");
    Connection conn = DriverManager.getConnection(jdbcURL, user, password);
-   String sql = "SELECT gameID, title, releaseDate, coverArt FROM Game";
+   
+   String sql = "SELECT " +
+           "g.gameID, g.title, g.releaseDate, g.coverArt, " +
+           "GROUP_CONCAT(DISTINCT gg.genreName ORDER BY gg.genreName SEPARATOR ', ') AS genres, " +
+           "GROUP_CONCAT(DISTINCT gp.platformName ORDER BY gp.platformName SEPARATOR ', ') AS platforms " +
+           "FROM game g " +
+           "LEFT JOIN has_genre hg ON g.gameID = hg.gameID " +
+           "LEFT JOIN game_genre gg ON hg.genreID = gg.genreID " +
+           "LEFT JOIN on_platform hp ON g.gameID = hp.gameID " +
+           "LEFT JOIN game_platform gp ON hp.platformID = gp.platformID " +
+           "GROUP BY g.gameID, g.title, g.releaseDate, g.coverArt";
+   
    Statement stmt = conn.createStatement();
    ResultSet rs = stmt.executeQuery(sql);
    while (rs.next()) {
@@ -135,12 +146,22 @@
      if (coverArt == null || coverArt.trim().isEmpty()) {
        coverArt = "https://via.placeholder.com/200x120.png?text=No+Image";
      }
+     String genres = rs.getString("genres");
+     if (genres == null || genres.trim().isEmpty()) {
+       genres = "Unknown";
+     }
+     String platforms = rs.getString("platforms");
+     if (platforms == null || platforms.trim().isEmpty()) {
+       platforms = "Not specified";
+     }
 %>
  <div class="game-card">
    <img class="game-cover" src="<%= coverArt %>" alt="Cover Art">
    <div class="game-info">
      <div class="game-title"><%= title %></div>
      <div class="game-meta"><%= releaseDateFormatted %></div>
+     <div class="game-meta">Genres: <%= genres %></div>
+     <div class="game-meta">Platforms: <%= platforms %></div>
    </div>
    <form class="wishlist-form" action="Wishlist.jsp" method="post">
      <input type="hidden" name="userID" value="11" />

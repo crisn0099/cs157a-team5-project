@@ -64,7 +64,9 @@
    <% for (Map<String, String> game : wishlist) { %>
        <li class="game">
            <img src="<%= game.get("coverImage") != null ? game.get("coverImage") : "https://via.placeholder.com/50" %>" width="50" style="vertical-align: middle;" />
-           <strong><%= game.get("name") %></strong> — <%= game.get("releaseDate") %>
+           <strong><%= game.get("name") %></strong>
+           <br>
+           Date Added: <%= game.get("dateAdded") != null ? game.get("dateAdded") : "Not specified" %>
        </li>
    <% } %>
    </ul>
