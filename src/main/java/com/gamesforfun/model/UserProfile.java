@@ -7,7 +7,7 @@ public class UserProfile {
        this.conn = conn;
    }
    public Map<String, String> getUserInfo(int userID) throws SQLException {
-       String query = "SELECT username, avatar, bio, gamingPreferences, playStyle FROM user WHERE userID = ?";
+       String query = "SELECT username, avatar, bio FROM user WHERE userID = ?";
        Map<String, String> userInfo = new HashMap<>();
        try (PreparedStatement ps = conn.prepareStatement(query)) {
            ps.setInt(1, userID);
@@ -16,14 +16,13 @@ public class UserProfile {
                userInfo.put("username", rs.getString("username"));
                userInfo.put("avatar", rs.getString("avatar"));
                userInfo.put("bio", rs.getString("bio"));
-               userInfo.put("gamingPreferences", rs.getString("gamingPreferences"));
-               userInfo.put("playStyle", rs.getString("playStyle"));
+               userInfo.put("playstyle", "Not specified."); 
            }
        }
        return userInfo;
    }
    public List<Map<String, String>> getWishlist(int userID) throws SQLException {
-       String query = "SELECT g.name, g.releaseDate, g.coverImage FROM wishlist w " +
+       String query = "SELECT g.title, g.releaseDate, g.coverArt FROM wishlist w " +
                       "JOIN game g ON w.gameID = g.gameID WHERE w.userID = ?";
        List<Map<String, String>> wishlist = new ArrayList<>();
        try (PreparedStatement ps = conn.prepareStatement(query)) {
@@ -31,9 +30,9 @@ public class UserProfile {
            ResultSet rs = ps.executeQuery();
            while (rs.next()) {
                Map<String, String> game = new HashMap<>();
-               game.put("name", rs.getString("name"));
+               game.put("name", rs.getString("title"));             
                game.put("releaseDate", rs.getString("releaseDate"));
-               game.put("coverImage", rs.getString("coverImage"));
+               game.put("coverImage", rs.getString("coverArt"));     
                wishlist.add(game);
            }
        }

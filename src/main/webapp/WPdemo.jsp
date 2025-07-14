@@ -52,7 +52,7 @@
    }
    .game-card {
      display: flex;
-     justify-content: start;
+     justify-content: space-between;
      align-items: center;
      background-color: #1e1e1e;
      border-radius: 10px;
@@ -84,6 +84,19 @@
      color: #ccc;
      margin-bottom: 4px;
    }
+   .wishlist-form button {
+     background-color: #ff4b5c;
+     border: none;
+     padding: 8px 14px;
+     color: white;
+     font-weight: bold;
+     border-radius: 5px;
+     cursor: pointer;
+     margin-right: 20px;
+   }
+   .wishlist-form button:hover {
+     background-color: #ff1e38;
+   }
  </style>
 </head>
 <body>
@@ -96,26 +109,27 @@
 <%
  String jdbcURL = "jdbc:mysql://localhost:3306/games_for_me?autoReconnect=true&useSSL=false";
  String user = "root";
- String password = "Hardinser20@";
+ String password = "DBpassword"; // Replace with your real password
  try {
    Class.forName("com.mysql.cj.jdbc.Driver");
    Connection conn = DriverManager.getConnection(jdbcURL, user, password);
-   String sql = "SELECT title, releaseDate, coverArt FROM Game";
+   String sql = "SELECT gameID, title, releaseDate, coverArt FROM Game";
    Statement stmt = conn.createStatement();
    ResultSet rs = stmt.executeQuery(sql);
    while (rs.next()) {
+     int gameID = rs.getInt("gameID");
      String title = rs.getString("title");
      String releaseDateFormatted = "";
      String rawDate = rs.getString("releaseDate");
      if (rawDate != null && !rawDate.isEmpty()) {
-         try {
-             java.text.SimpleDateFormat originalFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
-             java.text.SimpleDateFormat desiredFormat = new java.text.SimpleDateFormat("MMM dd, yyyy");
-             java.util.Date date = originalFormat.parse(rawDate);
-             releaseDateFormatted = desiredFormat.format(date);
-         } catch (Exception e) {
-             releaseDateFormatted = rawDate;
-         }
+       try {
+         java.text.SimpleDateFormat originalFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
+         java.text.SimpleDateFormat desiredFormat = new java.text.SimpleDateFormat("MMM dd, yyyy");
+         java.util.Date date = originalFormat.parse(rawDate);
+         releaseDateFormatted = desiredFormat.format(date);
+       } catch (Exception e) {
+         releaseDateFormatted = rawDate;
+       }
      }
      String coverArt = rs.getString("coverArt");
      if (coverArt == null || coverArt.trim().isEmpty()) {
@@ -128,6 +142,11 @@
      <div class="game-title"><%= title %></div>
      <div class="game-meta"><%= releaseDateFormatted %></div>
    </div>
+   <form class="wishlist-form" action="Wishlist.jsp" method="post">
+     <input type="hidden" name="userID" value="11" />
+     <input type="hidden" name="gameID" value="<%= gameID %>" />
+     <button type="submit">Add to Wishlist</button>
+   </form>
  </div>
 <%
    }
