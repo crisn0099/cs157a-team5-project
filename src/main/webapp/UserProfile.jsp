@@ -11,21 +11,26 @@
    List<String> favGames = new ArrayList<>();
    List<String> playing = new ArrayList<>();
    List<Map<String, String>> reviews = new ArrayList<>();
+   List<String> userPlaystyles = new ArrayList<>();
    double avgRating = 0.0;
    int helpfulCount = 0;
+   
    try {
        Class.forName("com.mysql.cj.jdbc.Driver");
        conn = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
        profile = new UserProfile(conn);
        userInfo = profile.getUserInfo(userID);
        wishlist = profile.getWishlist(userID);
-       favGames = profile.getFavoriteGames(userID);
-       playing = profile.getPlayingGames(userID);
-       reviews = profile.getReviewHistory(userID);
-       avgRating = profile.getAverageRating(userID);
-       helpfulCount = profile.getHelpfulReviewCount(userID);
+       userPlaystyles = profile.getUserPlaystyles(userID);
+       // favGames = profile.getFavoriteGames(userID);
+       // playing = profile.getPlayingGames(userID);
+       // reviews = profile.getReviewHistory(userID);
+       // avgRating = profile.getAverageRating(userID);
+       // helpfulCount = profile.getHelpfulReviewCount(userID);       
+      
    } catch (Exception e) {
        out.println("<p style='color:red;'>Error: " + e.getMessage() + "</p>");
+       e.printStackTrace(new java.io.PrintWriter(out));
    }
 %>
 <html>
@@ -42,8 +47,29 @@
 <h1><%= userInfo.getOrDefault("username", "Unknown User") %>'s Profile</h1>
 <img src="<%= userInfo.get("avatar") != null ? userInfo.get("avatar") : "https://via.placeholder.com/100" %>" class="avatar" />
 <p><%= userInfo.getOrDefault("bio", "No bio available.") %></p>
-<h2>Play Style</h2>
-<p><%= userInfo.getOrDefault("playstyle", "Not specified.") %></p>
+<h2>Playstyles</h2>
+<% 
+   Map<String, String> badgeMap = UserProfile.getPlaystyleBadgeMap(); 
+   if (userPlaystyles.isEmpty()) { 
+%>
+    <p>No playstyles selected.</p>
+<% 
+   } else { 
+%>
+    <ul style="list-style: none; padding: 0;">
+    <% for (String ps : userPlaystyles) { 
+           String badgePath = badgeMap.get(ps);
+    %>
+        <li style="margin: 10px 0;">
+            <% if (badgePath != null) { %>
+                <img src="<%= request.getContextPath() + badgePath %>" alt="<%= ps %>" style="width:40px; vertical-align: middle;" />
+
+            <% } %>
+            <span style="margin-left: 10px;"><%= ps %></span>
+        </li>
+    <% } %>
+    </ul>
+<% } %>
 <h2>Favorite Games</h2>
 <ul>
 <% for (String game : favGames) { %>

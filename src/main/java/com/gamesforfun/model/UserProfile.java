@@ -105,4 +105,36 @@ public class UserProfile {
        }
        return 0;
    }
+   
+   public List<String> getUserPlaystyles(int userID) throws SQLException {
+	    String query = "SELECT p.playstyleName FROM has_playstyle hp " +
+	                   "JOIN playstyle p ON hp.playstyleID = p.playstyleID " +
+	                   "WHERE hp.userID = ?";
+	    List<String> playstyles = new ArrayList<>();
+	    try (PreparedStatement ps = conn.prepareStatement(query)) {
+	        ps.setInt(1, userID);
+	        ResultSet rs = ps.executeQuery();
+	        while (rs.next()) {
+	            playstyles.add(rs.getString("playstyleName"));
+	        }
+	    }
+	    return playstyles;
+	}
+
+   private static final Map<String, String> playstyleBadgeMap = Map.of(
+		    "Casual", "/images/badges/casual.png",
+		    "Competitive", "/images/badges/competitive.png",
+		    "Explorer", "/images/badges/explorer.png",
+		    "Completionist", "/images/badges/completionist.png",
+		    "Social", "/images/badges/social.png",
+		    "Speedrunner", "/images/badges/speedrunner.png",
+		    "Roleplayer", "/images/badges/roleplayer.png",
+		    "Strategist", "/images/badges/strategist.png",
+		    "Content Creator", "/images/badges/creator.png",
+		    "Multitasker", "/images/badges/multitasker.png"
+		);
+   
+   public static Map<String, String> getPlaystyleBadgeMap() {
+	    return playstyleBadgeMap;
+	} 
 }
