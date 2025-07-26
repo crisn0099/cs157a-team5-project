@@ -135,6 +135,25 @@ public class UserProfile {
 	    }
 	    return playstyles;
 	}
+   
+   public List<Map<String, String>> getLibrary(int userID) throws SQLException {
+	   String query = "SELECT * FROM `library` l JOIN `game` g ON l.gameID = g.gameID WHERE l.userID = ?";
+
+	    
+	    List<Map<String, String>> library = new ArrayList<>();
+	    try (PreparedStatement ps = conn.prepareStatement(query)) {
+	        ps.setInt(1, userID);
+	        ResultSet rs = ps.executeQuery();
+	        while (rs.next()) {
+	            Map<String, String> game = new HashMap<>();
+	            game.put("name", rs.getString("title"));
+	            game.put("coverImage", rs.getString("coverArt"));
+	            library.add(game);
+	        }
+	    }
+	    return library;
+	}
+
 
    private static final Map<String, String> playstyleBadgeMap = Map.of(
 		    "Casual", "/images/badges/casual.png",

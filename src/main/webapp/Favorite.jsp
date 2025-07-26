@@ -2,16 +2,16 @@
 <%
    String jdbcURL = "jdbc:mysql://localhost:3306/games_for_me?autoReconnect=true&useSSL=false";
    String dbUser = "root";
-   String dbPassword = "dbPassword"; // Replace with your actual password
+   String dbPassword = "Hardinser20@"; // Replace with your actual password
    try {
        int userID = Integer.parseInt(request.getParameter("userID"));
        int gameID = Integer.parseInt(request.getParameter("gameID"));
        Class.forName("com.mysql.cj.jdbc.Driver");
        Connection conn = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
+       
        String checkQuery = "SELECT 1 FROM favorite_games WHERE userID = ? AND gameID = ?";
        try (
-           PreparedStatement checkStmt = conn.prepareStatement(checkQuery)
-       ) {
+           PreparedStatement checkStmt = conn.prepareStatement(checkQuery) ) {
            checkStmt.setInt(1, userID);
            checkStmt.setInt(2, gameID);
            ResultSet rs = checkStmt.executeQuery();

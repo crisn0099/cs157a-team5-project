@@ -109,7 +109,7 @@
 <%
  String jdbcURL = "jdbc:mysql://localhost:3306/games_for_me?autoReconnect=true&useSSL=false";
  String user = "root";
- String password = "dbPassword"; // Replace with your real password
+ String password = "Hardinser20@"; // Replace with your real password
  try {
    Class.forName("com.mysql.cj.jdbc.Driver");
    Connection conn = DriverManager.getConnection(jdbcURL, user, password);
@@ -173,7 +173,11 @@
   	 <input type="hidden" name="gameID" value="<%= gameID %>" />
   	 <button type="submit">Favorite</button>
    </form>
-   
+   <form class="wishlist-form" action="Library.jsp" method="post">
+     <input type="hidden" name="userID" value="11" />
+     <input type="hidden" name="gameID" value="<%= gameID %>" />
+     <button type="submit">Add to Library</button>
+   </form>
  </div>
 <%
    }

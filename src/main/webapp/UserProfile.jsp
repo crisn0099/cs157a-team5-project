@@ -3,7 +3,7 @@
    int userID = 11;
    String jdbcURL = "jdbc:mysql://localhost:3306/games_for_me";
    String dbUser = "root";
-   String dbPassword = "dbPassword"; // <-- Replace with your actual password
+   String dbPassword = "Hardinser20@"; // <-- Replace with your actual password
    Connection conn = null;
    UserProfile profile = null;
    Map<String, String> userInfo = new HashMap<>();
@@ -12,6 +12,7 @@
    List<String> playing = new ArrayList<>();
    List<Map<String, String>> reviews = new ArrayList<>();
    List<String> userPlaystyles = new ArrayList<>();
+   List<Map<String, String>> library = new ArrayList<>();
    double avgRating = 0.0;
    int helpfulCount = 0;
    
@@ -22,6 +23,7 @@
        userInfo = profile.getUserInfo(userID);
        wishlist = profile.getWishlist(userID);
        userPlaystyles = profile.getUserPlaystyles(userID);
+       library = profile.getLibrary(userID);
        // favGames = profile.getFavoriteGames(userID);
        // playing = profile.getPlayingGames(userID);
        // reviews = profile.getReviewHistory(userID);
@@ -70,6 +72,26 @@
     <% } %>
     </ul>
 <% } %>
+
+<h2>library</h2>
+<% 
+     if (library.isEmpty()) {
+%>
+    <p>No games in your library yet.</p>
+<% 
+    } else { 
+%>
+    <ul>
+    <% for (Map<String, String> game : library) { %>
+        <li class="game">
+            <img src="<%= game.get("coverImage") != null ? game.get("coverImage") : "https://via.placeholder.com/50" %>" width="50" style="vertical-align: middle;" />
+            <strong><%= game.get("name") %></strong>
+        </li>
+    <% } %>
+    </ul>
+<% } %>
+
+
 <h2>Favorite Games</h2>
 <% 
     List<Map<String, String>> favoriteGames = profile.getFavoriteGames(userID);
@@ -89,12 +111,7 @@
     <% } %>
     </ul>
 <% } %>
-<h2>Currently Playing</h2>
-<ul>
-<% for (String game : playing) { %>
-   <li><%= game %></li>
-<% } %>
-</ul>
+
 <h2>Wishlist</h2>
 <% if (wishlist.isEmpty()) { %>
    <p>No games in wishlist.</p>
@@ -110,6 +127,9 @@
    <% } %>
    </ul>
 <% } %>
+
+
+
 <h2>Average Rating</h2>
 <p><%= String.format("%.1f", avgRating) %>/5</p>
 <h2>Social Sharing Stats</h2>
