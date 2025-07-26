@@ -13,7 +13,7 @@ public class InsertGamesToDB {
 
         String jdbcUrl = "jdbc:mysql://localhost:3306/games_for_me?autoReconnect=true&useSSL=false";
         String dbUser = "root";
-        String dbPass = "DBpassword";
+        String dbPass = "dbPassword";
 
         try (
             Connection conn = DriverManager.getConnection(jdbcUrl, dbUser, dbPass)

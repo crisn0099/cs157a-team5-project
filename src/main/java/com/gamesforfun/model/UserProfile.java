@@ -22,9 +22,13 @@ public class UserProfile {
        return userInfo;
    }
    public List<Map<String, String>> getWishlist(int userID) throws SQLException {
-       String query = "SELECT g.title, g.releaseDate, g.coverArt, w.dateAdded " + 
-    		   		  "FROM wishlist w " +
-                      "JOIN game g ON w.gameID = g.gameID WHERE w.userID = ?";
+	   
+	   String query = "SELECT g.title, g.releaseDate, g.coverArt, w.dateAdded " +
+               "FROM wishlist w " +
+               "JOIN game g ON w.gameID = g.gameID " +
+               "WHERE w.userID = ? " +
+               "ORDER BY w.dateAdded DESC";
+
        List<Map<String, String>> wishlist = new ArrayList<>();
        try (PreparedStatement ps = conn.prepareStatement(query)) {
            ps.setInt(1, userID);
@@ -40,19 +44,30 @@ public class UserProfile {
        }
        return wishlist;
    }
-   public List<String> getFavoriteGames(int userID) throws SQLException {
-       String query = "SELECT g.name FROM favorite_games fg " +
-                      "JOIN game g ON fg.gameID = g.gameID WHERE fg.userID = ?";
-       List<String> favorites = new ArrayList<>();
-       try (PreparedStatement ps = conn.prepareStatement(query)) {
-           ps.setInt(1, userID);
-           ResultSet rs = ps.executeQuery();
-           while (rs.next()) {
-               favorites.add(rs.getString("name"));
-           }
-       }
-       return favorites;
-   }
+
+   
+   public List<Map<String, String>> getFavoriteGames(int userID) throws SQLException {
+	    String query = "SELECT g.title, g.releaseDate, g.coverArt " +
+	                   "FROM favorite_games f " +
+	                   "JOIN game g ON f.gameID = g.gameID " +
+	                   "WHERE f.userID = ?";
+	    
+	    List<Map<String, String>> favorites = new ArrayList<>();
+	    try (PreparedStatement ps = conn.prepareStatement(query)) {
+	        ps.setInt(1, userID);
+	        ResultSet rs = ps.executeQuery();
+	        while (rs.next()) {
+	            Map<String, String> game = new HashMap<>();
+	            game.put("name", rs.getString("title"));
+	            game.put("releaseDate", rs.getString("releaseDate"));
+	            game.put("coverImage", rs.getString("coverArt"));
+	            favorites.add(game);
+	        }
+	    }
+	    return favorites;
+	}
+
+   
    public List<String> getPlayingGames(int userID) throws SQLException {
        String query = "SELECT g.name FROM playing_library pl " +
                       "JOIN game g ON pl.gameID = g.gameID WHERE pl.userID = ?";

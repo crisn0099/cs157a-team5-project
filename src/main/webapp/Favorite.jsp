@@ -6,10 +6,9 @@
    try {
        int userID = Integer.parseInt(request.getParameter("userID"));
        int gameID = Integer.parseInt(request.getParameter("gameID"));
-       String dateAdded = LocalDate.now().toString();
        Class.forName("com.mysql.cj.jdbc.Driver");
        Connection conn = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
-       String checkQuery = "SELECT 1 FROM wishlist WHERE userID = ? AND gameID = ?";
+       String checkQuery = "SELECT 1 FROM favorite_games WHERE userID = ? AND gameID = ?";
        try (
            PreparedStatement checkStmt = conn.prepareStatement(checkQuery)
        ) {
@@ -17,11 +16,10 @@
            checkStmt.setInt(2, gameID);
            ResultSet rs = checkStmt.executeQuery();
            if (!rs.next()) {
-               String insertQuery = "INSERT INTO wishlist (userID, gameID, dateAdded) VALUES (?, ?, ?)";
+        	   String insertQuery = "INSERT INTO favorite_games (userID, gameID) VALUES (?, ?)";
                try (PreparedStatement insertStmt = conn.prepareStatement(insertQuery)) {
                    insertStmt.setInt(1, userID);
                    insertStmt.setInt(2, gameID);
-                   insertStmt.setString(3, dateAdded);
                    insertStmt.executeUpdate();
                }
            }

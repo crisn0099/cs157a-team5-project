@@ -3,7 +3,7 @@
    int userID = 11;
    String jdbcURL = "jdbc:mysql://localhost:3306/games_for_me";
    String dbUser = "root";
-   String dbPassword = "DBpassword"; // <-- Replace with your actual password
+   String dbPassword = "dbPassword"; // <-- Replace with your actual password
    Connection conn = null;
    UserProfile profile = null;
    Map<String, String> userInfo = new HashMap<>();
@@ -71,11 +71,24 @@
     </ul>
 <% } %>
 <h2>Favorite Games</h2>
-<ul>
-<% for (String game : favGames) { %>
-   <li><%= game %></li>
+<% 
+    List<Map<String, String>> favoriteGames = profile.getFavoriteGames(userID);
+    if (favoriteGames.isEmpty()) {
+%>
+    <p>No favorite games yet.</p>
+<% 
+    } else { 
+%>
+    <ul>
+    <% for (Map<String, String> game : favoriteGames) { %>
+        <li class="game">
+            <img src="<%= game.get("coverImage") != null ? game.get("coverImage") : "https://via.placeholder.com/50" %>" width="50" style="vertical-align: middle;" />
+            <strong><%= game.get("name") %></strong><br>
+        
+        </li>
+    <% } %>
+    </ul>
 <% } %>
-</ul>
 <h2>Currently Playing</h2>
 <ul>
 <% for (String game : playing) { %>
