@@ -106,7 +106,7 @@ Integer userID = (Integer) session.getAttribute("userID");
 <%
 String jdbcURL = "jdbc:mysql://localhost:3306/games_for_me?useUnicode=true&characterEncoding=UTF-8";
 String dbUser = "root";
-String dbPassword = "DBpassword";
+String dbPassword = "Hardinser20@";
 int genreID = Integer.parseInt(request.getParameter("genreID"));
 String genreName = "";
 

@@ -3,7 +3,7 @@
     int userID = (Integer) session.getAttribute("userID");
     if (userID != 1) { response.sendRedirect("Login.jsp"); return; }
 
-    Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/games_for_me", "root", "DBpassword");
+    Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/games_for_me", "root", "Hardinser20@");
 
     String flaggedQuery =
         "SELECT r.reviewID, r.textReview, r.flagReason, r.flagComment, u.username, g.title " +

@@ -265,7 +265,7 @@ Integer userID = (Integer) session.getAttribute("userID");
 <%
 String jdbcURL = "jdbc:mysql://localhost:3306/games_for_me?autoReconnect=true&useSSL=false";
 String user = "root";
-String password = "DBpassword";
+String password = "Hardinser20@";
 Connection conn = null;
 
 try {

@@ -144,7 +144,7 @@
 <%
 try {
   Class.forName("com.mysql.cj.jdbc.Driver");
-  Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/games_for_me", "root", "DBpassword");
+  Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/games_for_me", "root", "Hardinser20@");
 
   String sortParam = request.getParameter("sort");
   String orderBy;
