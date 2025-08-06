@@ -21,7 +21,7 @@ public class LoginServlet extends HttpServlet {
             String query = "SELECT userID FROM user WHERE username = ? AND password = ?";
             try (PreparedStatement ps = conn.prepareStatement(query)) {
                 ps.setString(1, username);
-                ps.setString(2, password); // compare with hash later
+                ps.setString(2, password);
                 ResultSet rs = ps.executeQuery();
 
                 if (rs.next()) {
