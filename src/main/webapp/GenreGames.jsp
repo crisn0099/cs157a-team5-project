@@ -1,14 +1,24 @@
-<%@ page import="java.sql.*" %>
+<%@ page import="java.sql.*, java.util.*" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%
+    request.setAttribute("currentPage", "Genres");
+%>
+<jsp:include page="navbar.jsp" />
+<%
+Integer userID = (Integer) session.getAttribute("userID");
+%>
+
 <html>
 <head>
   <title>Games by Genre</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     body {
       background-color: #121212;
       color: #fff;
       font-family: Arial, sans-serif;
-      padding: 40px;
+      padding: 0;
+      margin: 0;
     }
     h2 {
       text-align: center;
@@ -54,13 +64,49 @@
       color: #ccc;
       margin-bottom: 4px;
     }
+    .game-cover-container {
+      position: relative;
+      display: inline-block;
+      overflow: hidden;
+    }
+    .game-card:hover .game-cover-container::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -75%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(120deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 100%);
+      transform: skewX(-25deg);
+      pointer-events: none;
+      z-index: 2;
+      animation: shine-img 0.8s forwards;
+    }
+    @keyframes shine-img {
+      100% {
+        left: 125%;
+      }
+    }
+    .wishlist-form button {
+      background-color: #7F00FF;
+      border: none;
+      padding: 8px 14px;
+      color: white;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-right: 20px;
+    }
+    .wishlist-form button:hover {
+      background-color: #6D2F9C;
+    }
   </style>
 </head>
 <body>
 <%
 String jdbcURL = "jdbc:mysql://localhost:3306/games_for_me?useUnicode=true&characterEncoding=UTF-8";
 String dbUser = "root";
-String dbPassword = "Hardinser20@";
+String dbPassword = "DBpassword";
 int genreID = Integer.parseInt(request.getParameter("genreID"));
 String genreName = "";
 
@@ -80,7 +126,7 @@ try {
     genreStmt.close();
 %>
 
-<h2>Games in "<%= genreName %>"</h2>
+<h2><%= genreName %> Games</h2>
 <div class="game-container">
 <%
     String sql = "SELECT g.gameID, g.title, g.releaseDate, g.coverArt " +
@@ -113,13 +159,54 @@ try {
                 releaseDateFormatted = releaseDate;
             }
         }
+
+        String platformSql = "SELECT gp.platformName FROM game_platform gp " +
+                             "JOIN on_platform op ON gp.platformID = op.platformID " +
+                             "WHERE op.gameID = ?";
+        PreparedStatement platformStmt = conn.prepareStatement(platformSql);
+        platformStmt.setInt(1, gameID);
+        ResultSet platformRs = platformStmt.executeQuery();
+
+        List<String> platforms = new ArrayList<>();
+        while (platformRs.next()) {
+            platforms.add(platformRs.getString("platformName"));
+        }
+        String platformList = String.join(", ", platforms);
+
+        platformRs.close();
+        platformStmt.close();
 %>
-  <div class="game-card" onclick="window.location.href='GamePage.jsp?gameID=<%= gameID %>'" style="cursor: pointer;">
-    <img class="game-cover" src="<%= coverArt %>" alt="Cover Art">
-    <div class="game-info">
-      <div class="game-title"><%= title %></div>
-      <div class="game-meta">Release Date: <%= releaseDateFormatted %></div>
-    </div>
+  <div class="game-card">
+    <a href="GamePage.jsp?gameID=<%= gameID %>" style="text-decoration: none; color: inherit; display: flex; flex-grow: 1;">
+      <div class="game-cover-container">
+        <img class="game-cover" src="<%= coverArt %>" alt="Cover Art">
+      </div>
+      <div class="game-info">
+        <div class="game-title"><%= title %></div>
+        <div class="game-meta">Release Date: <%= releaseDateFormatted %></div>
+        <div class="game-meta">Platforms: <%= platformList %></div>
+      </div>
+    </a>
+
+    <% if (userID != null) { %>
+    <form class="wishlist-form" action="Wishlist.jsp" method="post">
+      <input type="hidden" name="userID" value="<%= userID %>" />
+      <input type="hidden" name="gameID" value="<%= gameID %>" />
+      <button type="submit">Wishlist</button>
+    </form>
+
+    <form class="wishlist-form" action="Favorite.jsp" method="post">
+      <input type="hidden" name="userID" value="<%= userID %>" />
+      <input type="hidden" name="gameID" value="<%= gameID %>" />
+      <button type="submit">Favorite</button>
+    </form>
+
+    <form class="wishlist-form" action="Library.jsp" method="post">
+      <input type="hidden" name="userID" value="<%= userID %>" />
+      <input type="hidden" name="gameID" value="<%= gameID %>" />
+      <button type="submit">Add to Library</button>
+    </form>
+    <% } %>
   </div>
 <%
     }
