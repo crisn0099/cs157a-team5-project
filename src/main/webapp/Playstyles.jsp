@@ -24,7 +24,7 @@
 
     String jdbcURL = "jdbc:mysql://localhost:3306/games_for_me";
     String dbUser = "root";
-    String dbPassword = "Hardinser20@";
+    String dbPassword = "DBpassword";
 
     if ("POST".equalsIgnoreCase(request.getMethod()) && request.getParameter("playstyleID") != null) {
         try {

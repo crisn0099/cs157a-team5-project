@@ -13,7 +13,7 @@
 
    String jdbcURL = "jdbc:mysql://localhost:3306/games_for_me";
    String dbUser = "root";
-   String dbPassword = "Hardinser20@";
+   String dbPassword = "DBpassword";
    Connection conn = null;
    UserProfile profile = null;
    Map<String, String> userInfo = new HashMap<>();

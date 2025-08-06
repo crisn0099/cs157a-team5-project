@@ -2,7 +2,7 @@
 <%
    String jdbcURL = "jdbc:mysql://localhost:3306/games_for_me?autoReconnect=true&useSSL=false";
    String dbUser = "root";
-   String dbPassword = "Hardinser20@";
+   String dbPassword = "DBpassword";
 
    try {
        int userID = Integer.parseInt(request.getParameter("userID"));

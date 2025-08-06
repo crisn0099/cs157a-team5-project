@@ -7,7 +7,7 @@ if (userID != null) {
     try {
         String jdbcURL = "jdbc:mysql://localhost:3306/games_for_me";
         String dbUser = "root";
-        String dbPassword = "Hardinser20@";
+        String dbPassword = "DBpassword";
         Connection conn = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
         UserProfile profile = new UserProfile(conn);
         Map<String, String> userInfo = profile.getUserInfo(userID);

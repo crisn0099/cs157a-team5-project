@@ -117,7 +117,7 @@ Integer userID = (Integer) session.getAttribute("userID");
 <%
     String jdbcURL = "jdbc:mysql://localhost:3306/games_for_me?useUnicode=true&characterEncoding=UTF-8";
     String dbUser = "root";
-    String dbPassword = "Hardinser20@";
+    String dbPassword = "DBpassword";
 
     try {
         Class.forName("com.mysql.cj.jdbc.Driver");

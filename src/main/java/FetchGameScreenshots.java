@@ -12,7 +12,7 @@ public class FetchGameScreenshots {
     private static final String apiKey = "7ba31eb2771e41cd82d7b985c8c4f489";
     private static final String jdbcUrl = "jdbc:mysql://localhost:3306/games_for_me?autoReconnect=true&useSSL=false";
     private static final String dbUser = "root";
-    private static final String dbPass = "Hardinser20@";
+    private static final String dbPass = "DBpassword";
 
     public static void main(String[] args) {
         try (Connection conn = DriverManager.getConnection(jdbcUrl, dbUser, dbPass)) {
