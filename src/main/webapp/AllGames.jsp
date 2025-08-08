@@ -146,7 +146,29 @@
     }
     .favorite-btn:hover .hover-text {
       opacity: 1;
-    }  
+    }
+    .wishlist-btn {
+      background-color: #7F00FF;
+      border: none;
+      padding: 8px 14px;
+      color: white;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      position: relative;
+    }
+    .wishlist-btn .hover-text {
+      opacity: 0;
+      transition: opacity 0.2s ease-in-out;
+      white-space: nowrap;
+    }
+    .wishlist-btn:hover .hover-text {
+      opacity: 1;
+    }          
   </style>
 </head>
 <body>
@@ -166,7 +188,7 @@
 <%
 try {
   Class.forName("com.mysql.cj.jdbc.Driver");
-  Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/games_for_me", "root", "DBpassword");
+  Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/games_for_me", "root", "Dbpassword");
 
   String sortParam = request.getParameter("sort");
   String orderBy;
@@ -244,10 +266,13 @@ try {
       </button>
     </form>
 
-    <form class="wishlist-form" action="Favorite.jsp" method="post">
-      <input type="hidden" name="userID" value="<%= userID %>" />
-      <input type="hidden" name="gameID" value="<%= gameID %>" />
-      <button type="submit">Favorite</button>
+    <form class="wishlist-form" action="Wishlist.jsp" method="post">
+      <input type="hidden" name="userID" value="<%= userID %>">
+      <input type="hidden" name="gameID" value="<%= gameID %>">
+      <button type="submit" class="wishlist-btn">
+         <i class="fas fa-gift"></i>
+         <span class="hover-text">Wishlist</span>
+      </button>
     </form>
 
     <form class="wishlist-form" action="Library.jsp" method="post">
