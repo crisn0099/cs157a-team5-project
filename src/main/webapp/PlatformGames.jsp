@@ -97,14 +97,36 @@ Integer userID = (Integer) session.getAttribute("userID");
     }
     .favorite-btn:hover .hover-text {
       opacity: 1;
-    }    
+    }
+    .wishlist-btn {
+      background-color: #7F00FF;
+      border: none;
+      padding: 8px 14px;
+      color: white;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      position: relative;
+    }
+    .wishlist-btn .hover-text {
+      opacity: 0;
+      transition: opacity 0.2s ease-in-out;
+      white-space: nowrap;
+    }
+    .wishlist-btn:hover .hover-text {
+      opacity: 1;
+    }     
   </style>
 </head>
 <body>
 <%
 String jdbcURL = "jdbc:mysql://localhost:3306/games_for_me?useUnicode=true&characterEncoding=UTF-8";
 String dbUser = "root";
-String dbPassword = "DBpassword";
+String dbPassword = "Dbpassword";
 int platformID = Integer.parseInt(request.getParameter("platformID"));
 String platformName = "";
 
@@ -192,9 +214,12 @@ try {
 
 
     <form class="wishlist-form" action="Wishlist.jsp" method="post">
-      <input type="hidden" name="userID" value="<%= userID %>" />
-      <input type="hidden" name="gameID" value="<%= gameID %>" />
-      <button type="submit">Wishlist</button>
+      <input type="hidden" name="userID" value="<%= userID %>">
+      <input type="hidden" name="gameID" value="<%= gameID %>">
+      <button type="submit" class="wishlist-btn">
+         <i class="fas fa-gift"></i>
+         <span class="hover-text">Wishlist</span>
+      </button>
     </form>
 
     <form class="wishlist-form" action="Library.jsp" method="post">
