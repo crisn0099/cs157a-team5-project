@@ -75,7 +75,29 @@ Integer userID = (Integer) session.getAttribute("userID");
     }
     .wishlist-form button:hover {
       background-color: #6D2F9C;
+    }   
+    .favorite-btn {
+      background-color: #7F00FF;
+      border: none;
+      padding: 8px 14px;
+      color: white;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      position: relative;
     }
+    .favorite-btn .hover-text {
+      opacity: 0;
+      transition: opacity 0.2s ease-in-out;
+      white-space: nowrap;
+    }
+    .favorite-btn:hover .hover-text {
+      opacity: 1;
+    }    
   </style>
 </head>
 <body>
@@ -159,16 +181,20 @@ try {
     </a>
 
     <% if (userID != null) { %>
-    <form class="wishlist-form" action="Wishlist.jsp" method="post">
-      <input type="hidden" name="userID" value="<%= userID %>">
-      <input type="hidden" name="gameID" value="<%= gameID %>">
-      <button type="submit">Wishlist</button>
-    </form>
-
     <form class="wishlist-form" action="Favorite.jsp" method="post">
       <input type="hidden" name="userID" value="<%= userID %>">
       <input type="hidden" name="gameID" value="<%= gameID %>">
-      <button type="submit">Favorite</button>
+      <button type="submit" class="favorite-btn">
+         <i class="fas fa-bookmark"></i>
+         <span class="hover-text">Favorite</span>
+      </button>
+    </form>
+
+
+    <form class="wishlist-form" action="Wishlist.jsp" method="post">
+      <input type="hidden" name="userID" value="<%= userID %>" />
+      <input type="hidden" name="gameID" value="<%= gameID %>" />
+      <button type="submit">Wishlist</button>
     </form>
 
     <form class="wishlist-form" action="Library.jsp" method="post">
