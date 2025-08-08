@@ -123,8 +123,9 @@ String currentPage = (String) request.getAttribute("currentPage");
 <body>
 <nav class="top-nav">
   <a href="MainPage.jsp" class="logo <%= "MainPage".equals(currentPage) ? "active" : "" %>" style="margin-left: 20px; margin-right: 40px;">GamesForMe</a>
-  <a href="Genres.jsp" class="<%= "Genres".equals(currentPage) ? "active" : "" %>">Genres</a>
   <a href="AllGames.jsp" class="<%= "AllGames".equals(currentPage) ? "active" : "" %>">All Games</a>
+  <a href="Genres.jsp" class="<%= "Genres".equals(currentPage) ? "active" : "" %>">Genres</a>
+  <a href="Platforms.jsp" class="<%= "Platforms".equals(currentPage) ? "active" : "" %>">Platforms</a>
   <a href="FeaturedGames.jsp" class="<%= "FeaturedGames".equals(currentPage) ? "active" : "" %>">Featured Games</a>
 
 <form action="SearchResults.jsp" method="get" class="search-form">
